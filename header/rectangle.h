@@ -9,20 +9,21 @@
 #include "shader.h"
 
 class Rectangle {
-  public:
     glm::vec4 colour;
     glm::vec3 position;
     float x_lenght, y_lenght;
+    unsigned int VAO, VBO, EBO;
+    void init_gl_resources();
 
+  public:
     Rectangle(float x_size, float y_size, float x_pos, float y_pos, float red,
               float green, float blue);
 
     static Shader& get_rect_shader();
 
     void render();
-    unsigned int VAO, VBO, EBO;
 
-    void init_gl_resources();
+    void shift(float x_shift, float y_shift);
 };
 
 

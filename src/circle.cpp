@@ -60,3 +60,8 @@ void Circle::render() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
+
+void Circle::shift(float x_shift, float y_shift) {
+    position.x += x_shift;
+    position.y += y_shift;
+}

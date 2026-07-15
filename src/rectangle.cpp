@@ -1,4 +1,4 @@
-#include "rect.h"
+#include "rectangle.h"
 // clang-format off
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -58,4 +58,9 @@ void Rectangle::render() {
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+void Rectangle::shift(float x_shift, float y_shift) {
+    position.x += x_shift;
+    position.y += y_shift;
 }
