@@ -46,8 +46,8 @@ endif()
 
 FetchContent_MakeAvailable(glfw glm)
 
-target_sources(Multipong PRIVATE src/main.cpp src/shader.cpp src/rect.cpp
-                                 src/circle.cpp)
+target_sources(Multipong PRIVATE src/main.cpp src/shader.cpp src/rectangle.cpp
+                                 src/circle.cpp src/win.cpp)
 
 target_compile_definitions(Multipong
                            PRIVATE SHADER="${CMAKE_SOURCE_DIR}/shader/")
