@@ -4,6 +4,9 @@
 // clang-format on
 #include <print>
 
+#include "circle.h"
+#include "rect.h"
+
 int main() {
     int init = glfwInit();
     if(init == 0) {
@@ -22,16 +25,26 @@ int main() {
         glfwTerminate();
         return -1;
     }
-    std::print("Loaded OpenGL %d.%d\n", GLAD_VERSION_MAJOR(version),
-               GLAD_VERSION_MINOR(version));
+    std::println("Loaded OpenGL");
+    glViewport(0, 0, 800, 800);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glViewport(0, 0, 800, 600);
+
+    // Rectangle kocka(1, 0.5, 0, 0, 1, 1, 1);
+
+    Circle kor(1, 0, 0, 1, 1, 1);
+    Circle kor2(0.5, 0, 0, 1, 0, 1);
+
     while(!glfwWindowShouldClose(window)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        kor.render();
+        kor2.render();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
 
     glfwTerminate();
 }

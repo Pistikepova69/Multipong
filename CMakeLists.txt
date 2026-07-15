@@ -26,15 +26,14 @@ FetchContent_Declare(
 project(Multipong LANGUAGES CXX C)
 add_executable(Multipong)
 
-
 FetchContent_GetProperties(glad)
 if(NOT glad_POPULATED)
-message("Fetching glad")
-FetchContent_MakeAvailable(glad)
+  message("Fetching glad")
+  FetchContent_MakeAvailable(glad)
 
-add_subdirectory("${glad_SOURCE_DIR}/cmake" glad_cmake)
-glad_add_library(
-  glad
+  add_subdirectory("${glad_SOURCE_DIR}/cmake" glad_cmake)
+  glad_add_library(
+    glad
     REPRODUCIBLE
     EXCLUDE_FROM_ALL
     LOADER
@@ -47,7 +46,11 @@ endif()
 
 FetchContent_MakeAvailable(glfw glm)
 
-target_sources(Multipong PRIVATE src/main.cpp)
+target_sources(Multipong PRIVATE src/main.cpp src/shader.cpp src/rect.cpp
+                                 src/circle.cpp)
+
+target_compile_definitions(Multipong
+                           PRIVATE SHADER="${CMAKE_SOURCE_DIR}/shader/")
 
 target_include_directories(Multipong PRIVATE header)
 
