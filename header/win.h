@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on  
 #include <string>
+#include <glm/glm.hpp>
 
 
 
@@ -13,6 +14,10 @@ class Win{
     GLFWwindow* window;
     int width, height;
     std::string title;
+    glm::mat4 projection;
+    
+    
+    void update_projection();
     void init();
     static void size_callback(GLFWwindow *window, int new_width, int new_height);
     void handle_resize(int new_width, int new_height);
@@ -21,6 +26,10 @@ class Win{
 
     Win(int width = 800, int height = 800, const std::string& title="");
     operator GLFWwindow*();
+
+    int get_window_height() const;
+    int get_window_width() const;
+    glm::mat4 get_projection() const;
 
     ~Win();
 };

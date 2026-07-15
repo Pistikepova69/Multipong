@@ -7,17 +7,19 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "shader.h"
+#include "win.h"
 
 class Circle {
     glm::vec4 colour;
     glm::vec3 position;
     float radius;
     unsigned int VAO, VBO, EBO;
+    const Win& window;
     void init_gl_resources();
 
   public:
     Circle(float rad, float x_pos, float y_pos, float red, float green,
-           float blue);
+           float blue,const Win& window);
 
     static Shader& get_circ_shader();
 

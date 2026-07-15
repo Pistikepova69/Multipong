@@ -8,9 +8,9 @@
 // clang-format on
 
 Rectangle::Rectangle(float x_size, float y_size, float x_pos, float y_pos,
-                     float red, float green, float blue)
+                     float red, float green, float blue, const Win& window)
     : colour{red, green, blue, 1}, position{x_pos, y_pos, 0}, x_lenght(x_size),
-      y_lenght(y_size), VAO(0), VBO(0), EBO(0) {
+      y_lenght(y_size), VAO(0), VBO(0), EBO(0), window(window) {
     if(VAO == 0 || VBO == 0 || EBO == 0) {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
@@ -25,10 +25,10 @@ Shader& Rectangle::get_rect_shader() {
 
 void Rectangle::init_gl_resources() {
     glm::vec3 vertices[4]{
-        glm::vec3{-x_lenght / 2, y_lenght / 2, 0},   // top left
-        glm::vec3{x_lenght / 2, y_lenght / 2, 0},    // top right
-        glm::vec3{-x_lenght / 2, -y_lenght / 2, 0},  // bottom left
-        glm::vec3{x_lenght / 2, -y_lenght / 2, 0}    // bottom right
+        glm::vec3{-1, 1, 0},   // top left
+        glm::vec3{1, 1, 0},    // top right
+        glm::vec3{-1, -1, 0},  // bottom left
+        glm::vec3{1, -1, 0}    // bottom right
     };
 
     unsigned int indices[6]{2, 0, 1,  //
@@ -53,7 +53,9 @@ void Rectangle::init_gl_resources() {
 void Rectangle::render() {
     Rectangle::get_rect_shader().use();
     Rectangle::get_rect_shader().set_mat4(
-        "model", glm::translate(glm::mat4{1}, position));
+        "model", glm::scale(glm::translate(glm::mat4{1}, position),
+                            glm::vec3(x_lenght / 2, y_lenght / 2, 1.0)));
+    Rectangle::get_rect_shader().set_mat4("proj", window.get_projection());
     Rectangle::get_rect_shader().set_vec4("colour", colour);
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

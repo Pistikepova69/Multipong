@@ -2,15 +2,15 @@
 // clang-format off
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
-#include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_float3.hpp"
+#include "win.h"
 // clang-format on
 
 Circle::Circle(float rad, float x_pos, float y_pos, float red, float green,
-               float blue)
+               float blue, const Win& window)
     : colour{red, green, blue, 1}, position{x_pos, y_pos, 0}, radius(rad),
-      VAO(0), VBO(0), EBO(0) {
+      VAO(0), VBO(0), EBO(0), window{window} {
     if(VAO == 0 || VBO == 0 || EBO == 0) {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
@@ -25,10 +25,10 @@ Shader& Circle::get_circ_shader() {
 
 void Circle::init_gl_resources() {
     glm::vec3 vertices[4]{
-        glm::vec3{-radius, radius, 0},   // top left
-        glm::vec3{radius, radius, 0},    // top right
-        glm::vec3{-radius, -radius, 0},  // bottom left
-        glm::vec3{radius, -radius, 0}    // bottom right
+        glm::vec3{-1, 1, 0},   // top left
+        glm::vec3{1, 1, 0},    // top right
+        glm::vec3{-1, -1, 0},  // bottom left
+        glm::vec3{1, -1, 0}    // bottom right
     };
 
     unsigned int indices[6]{2, 0, 1,  //
@@ -52,10 +52,12 @@ void Circle::init_gl_resources() {
 
 void Circle::render() {
     Circle::get_circ_shader().use();
-    Circle::get_circ_shader().set_mat4("model",
-                                       glm::translate(glm::mat4{1}, position));
+    Circle::get_circ_shader().set_mat4(
+        "model", glm::scale(glm::translate(glm::mat4{1}, position),
+                            glm::vec3{radius, radius, 1}));
+    Circle::get_circ_shader().set_mat4("proj", window.get_projection());
     Circle::get_circ_shader().set_vec4("colour", colour);
-    Circle::get_circ_shader().set_float("radius", radius);
+
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
