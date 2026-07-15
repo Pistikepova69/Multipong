@@ -6,13 +6,13 @@
 #include "GLFW/glfw3.h"
 #include "glm/ext/matrix_clip_space.hpp"
 
-
-void Win::update_projection(){
-        float aspect = (float)width / (float)height;
-    if (aspect >= 1.0f) {
+void Win::update_projection() {
+    float aspect = (float) width / (float) height;
+    if(aspect >= 1.0f) {
         projection = glm::ortho(-aspect, aspect, -1.0f, 1.0f);
-    } else {
-        projection = glm::ortho(-1.0f, 1.0f, -1.0f/aspect, 1.0f/aspect);
+    }
+    else {
+        projection = glm::ortho(-1.0f, 1.0f, -1.0f / aspect, 1.0f / aspect);
     }
 }
 
@@ -71,6 +71,10 @@ int Win::get_window_height() const { return height; }
 
 int Win::get_window_width() const { return width; }
 
-glm::mat4 Win::get_projection() const{
-    return projection;
+glm::mat4 Win::get_projection() const { return projection; }
+
+double Win::get_time() const { return glfwGetTime(); }
+
+void Win::set_key_callback(void(*key_callback)(GLFWwindow*, int, int, int, int)) {
+    glfwSetKeyCallback(window, key_callback);
 }

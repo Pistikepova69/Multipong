@@ -10,7 +10,7 @@
 Rectangle::Rectangle(float x_size, float y_size, float x_pos, float y_pos,
                      float red, float green, float blue, const Win& window)
     : colour{red, green, blue, 1}, position{x_pos, y_pos, 0}, x_lenght(x_size),
-      y_lenght(y_size), VAO(0), VBO(0), EBO(0), window(window) {
+      y_lenght(y_size), VAO(0), VBO(0), EBO(0), window(window), deltatime(0), last_time(0) {
     if(VAO == 0 || VBO == 0 || EBO == 0) {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
@@ -51,6 +51,16 @@ void Rectangle::init_gl_resources() {
 }
 
 void Rectangle::render() {
+    double time = window.get_time();
+    if(last_time == 0){
+        last_time = time;
+        deltatime = 0; 
+    }
+    else {
+        deltatime = time - last_time;
+        last_time = time;
+    }
+
     Rectangle::get_rect_shader().use();
     Rectangle::get_rect_shader().set_mat4(
         "model", glm::scale(glm::translate(glm::mat4{1}, position),
@@ -66,3 +76,5 @@ void Rectangle::shift(float x_shift, float y_shift) {
     position.x += x_shift;
     position.y += y_shift;
 }
+
+double Rectangle::get_deltatime() { return deltatime; }

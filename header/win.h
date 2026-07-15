@@ -5,8 +5,8 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 // clang-format on  
-#include <string>
 #include <glm/glm.hpp>
+#include <string>
 
 
 
@@ -30,6 +30,9 @@ class Win{
     int get_window_height() const;
     int get_window_width() const;
     glm::mat4 get_projection() const;
+
+    double get_time() const;
+    void set_key_callback(void(*key_callback)(GLFWwindow*, int, int, int, int));
 
     ~Win();
 };

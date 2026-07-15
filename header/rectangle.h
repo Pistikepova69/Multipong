@@ -16,6 +16,7 @@ class Rectangle {
     unsigned int VAO, VBO, EBO;
     const Win& window;
     void init_gl_resources();
+    double deltatime, last_time;
 
   public:
     Rectangle(float x_size, float y_size, float x_pos, float y_pos, float red,
@@ -24,6 +25,7 @@ class Rectangle {
     static Shader& get_rect_shader();
 
     void render();
+    double get_deltatime();
 
     void shift(float x_shift, float y_shift);
 };
