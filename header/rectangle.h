@@ -1,33 +1,20 @@
 #ifndef RECT_H
 #define RECT_H
 
-#include <glm/fwd.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
-#include "shader.h"
-#include "win.h"
+#include "quad.h"
 
-class Rectangle {
-    glm::vec4 colour;
-    glm::vec3 position;
+class Rectangle : public Quad {
     float x_lenght, y_lenght;
-    unsigned int VAO, VBO, EBO;
-    const Win& window;
-    void init_gl_resources();
-    double deltatime, last_time;
 
   public:
     Rectangle(float x_size, float y_size, float x_pos, float y_pos, float red,
               float green, float blue, const Win& window);
+    Rectangle(glm::vec2 size, glm::vec2 pos, glm::vec3 colour,
+              const Win& window);
+    Shader& get_shader() override;
 
-    static Shader& get_rect_shader();
-
-    void render();
-    double get_deltatime();
-
-    void shift(float x_shift, float y_shift);
+    void render() override;
 };
 
 

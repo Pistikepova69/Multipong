@@ -1,6 +1,7 @@
 #include "bar.h"
 
 #include "GLFW/glfw3.h"
+#include "rectangle.h"
 
 void Bar::handle_input(int key, int action) {
     if(key == up_key && action == GLFW_PRESS) {
@@ -19,17 +20,25 @@ void Bar::handle_input(int key, int action) {
 
 Bar::Bar(float x_size, float y_size, float x_pos, float red, float green,
          float blue, const Win& window, int up_key, int down_key, float speed)
-    : mesh(x_size, y_size, x_pos, 0, red, green, blue, window), up_key(up_key),
-      down_key(down_key), speed(speed), up_pressed(false), down_pressed(false) {
-}
+    : Rectangle(x_size, y_size, x_pos, 0, red, green, blue, window),
+      up_key(up_key), down_key(down_key), speed(speed), up_pressed(false),
+      down_pressed(false), deltatime(0), last_time(0) {}
 
 void Bar::render() {
     update();
-    mesh.render();
+    Rectangle::render();
 }
 
 void Bar::update() {
-    float deltatime = (float) mesh.get_deltatime();
-    mesh.shift(
-        0, speed * deltatime * (float) ((int) up_pressed - (int) down_pressed));
+    double time = window.get_time();
+    if(last_time == 0) {
+        last_time = time;
+        deltatime = 0;
+    }
+    else {
+        deltatime = time - last_time;
+        last_time = time;
+    }
+    shift(0, speed * (float) deltatime *
+                 (float) ((int) up_pressed - (int) down_pressed));
 }

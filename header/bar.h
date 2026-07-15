@@ -3,11 +3,12 @@
 
 #include "rectangle.h"
 
-class Bar {
-    Rectangle mesh;
+class Bar : public Rectangle {
     int up_key, down_key;
     float speed;
     bool up_pressed, down_pressed;
+    double deltatime, last_time;
+
 
 
   public:
