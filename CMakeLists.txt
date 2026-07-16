@@ -55,7 +55,8 @@ target_sources(
           src/rectangle.cpp
           src/circle.cpp
           src/win.cpp
-          src/bar.cpp)
+          src/bar.cpp
+          src/ball.cpp)
 
 target_compile_definitions(Multipong
                            PRIVATE SHADER="${CMAKE_SOURCE_DIR}/shader/")
