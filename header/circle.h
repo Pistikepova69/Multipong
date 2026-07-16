@@ -4,6 +4,7 @@
 #include "quad.h"
 
 class Circle : public Quad {
+  protected:
     float radius;
 
   public:
