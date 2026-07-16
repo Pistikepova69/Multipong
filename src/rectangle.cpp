@@ -34,3 +34,7 @@ void Rectangle::render() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
+
+glm::vec2 Rectangle::get_size() const{
+    return glm::vec2{x_lenght, y_lenght};
+}

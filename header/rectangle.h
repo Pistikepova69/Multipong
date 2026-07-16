@@ -5,6 +5,7 @@
 #include "quad.h"
 
 class Rectangle : public Quad {
+  protected:
     float x_lenght, y_lenght;
 
   public:
@@ -15,6 +16,7 @@ class Rectangle : public Quad {
     Shader& get_shader() override;
 
     void render() override;
+    glm::vec2 get_size() const;
 };
 
 
