@@ -24,7 +24,7 @@ class Win{
 
     public:
 
-    Win(int width = 800, int height = 800, const std::string& title="");
+    Win(int width = 800, int height = 450, const std::string& title="");
     operator GLFWwindow*();
 
     int get_window_height() const;

@@ -59,7 +59,7 @@ void Win::init() {
     glfwSetWindowUserPointer(window, this);
 
     glfwSetWindowSizeCallback(window, size_callback);
-
+    glfwSetWindowAspectRatio(window, 16, 9);
     update_projection();
 }
 
