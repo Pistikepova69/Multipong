@@ -26,6 +26,9 @@ class Shape_Base {
     virtual ~Shape_Base() = default;
     void shift(float x_shift, float y_shift);
     void shift(const glm::vec2& shift);
+    void set_pos(float x_pos, float y_pos);
+    void set_pos(glm::vec2 pos);
+    glm::vec3 get_pos() const;
 };
 
 #endif
