@@ -41,4 +41,10 @@ void Bar::update() {
     }
     shift(0, speed * (float) deltatime *
                  (float) ((int) up_pressed - (int) down_pressed));
+    if(position.y + y_lenght / 2 >= 1.0) {
+        set_pos(position.x, 1.0f - y_lenght / 2);
+    }
+    if(position.y - y_lenght / 2 <= -1.0) {
+        set_pos(position.x, -1.0f + y_lenght / 2);
+    }
 }
