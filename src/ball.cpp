@@ -2,10 +2,13 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <iostream>
 #include <random>
 #include <vector>
 
 #include "circle.h"
+#include "glm/ext/vector_float2.hpp"
+#include "glm/geometric.hpp"
 
 std::random_device Ball::random_device{};
 
@@ -31,11 +34,13 @@ float Ball::random_uniform(float lower_bound, float upper_bound) {
 }
 
 void Ball::handle_edge_collision() {
-    if(position.y + radius >= 1) {
+    if(position.y + radius >= 1 && speed.y > 0) {
         speed.y = -speed.y;
+        set_pos(position.x, 1 - radius);
     }
-    if(position.y - radius <= -1) {
+    if(position.y - radius <= -1 && speed.y < 0) {
         speed.y = -speed.y;
+        set_pos(position.x, -1 + radius);
     }
 }
 
@@ -49,17 +54,46 @@ void Ball::handle_bar_collision(const Bar& bar) {
         std::min(bar_pos.y + bar_sidelengths.y / 2,
                  std::max(bar_pos.y - bar_sidelengths.y / 2, position.y));
 
-    float dx = position.x - closest_x;
-    float dy = position.y - closest_y;
+    glm::vec2 ds{position.x - closest_x, position.y - closest_y};
 
-    float ds_2 = dx * dx + dy * dy;
-    if(ds_2 <= radius * radius) {
+
+    if(glm::dot(ds, ds) <= radius * radius) {
+        if(glm::dot(ds, ds) < 1e-10f) {
+            // std::cout << "Benne van\n";
+            float left = position.x - (bar_pos.x - bar_sidelengths.x / 2);
+            float right = (bar_pos.x + bar_sidelengths.x / 2) - position.x;
+            float bottom = position.y - (bar_pos.y - bar_sidelengths.y / 2);
+            float top = (bar_pos.y + bar_sidelengths.y / 2) - position.y;
+            float min_dist = std::min({left, right, bottom, top});
+            if(min_dist == left) {
+                ds = glm::vec2(-1, 0);
+            }
+            else if(min_dist == right) {
+                ds = glm::vec2(1, 0);
+            }
+            else if(min_dist == bottom) {
+                ds = glm::vec2(0, -1);
+            }
+            else {
+                ds = glm::vec2(0, 1);
+            }
+        }
+
         speed.x = -speed.x;
         float y_speed_sign = speed.y > 0 ? 1 : -1;
-        speed.y =
-            std::abs(bar_pos.y - closest_y) * std::abs(speed.x) * y_speed_sign * 2;
+        speed.y = std::abs(bar_pos.y - closest_y) / (bar_sidelengths.y / 2) *
+                  std::abs(speed.x) * y_speed_sign / 2;
+
+        float bonus_sign = ds.x < 0 ? 1 : -1;
+        set_pos(glm::normalize(ds) * radius + glm::vec2{closest_x, closest_y} +
+                glm::vec2{0.005f * bonus_sign});
+        if(position.y >= 1) {
+            set_pos(position.x, 1);
+        }
+        if(position.y <= -1) {
+            set_pos(position.x, -1);
+        }
     }
-    
 }
 
 void Ball::update(const std::vector<Bar>& bars) {

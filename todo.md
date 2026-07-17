@@ -1,8 +1,8 @@
 # Todo
 
 - [ ] Max sebesség
-- [ ] Beragadó labda
-- [ ] Fent beragadás bug?
+- [x] Beragadó labda
+- [x] Fent beragadás bug?
 - [ ] Full screen alapból
 - [ ] Globális Ball constructor bug
 - [ ] Score számolás
